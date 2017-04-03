@@ -35,7 +35,75 @@ public struct SetRouteAction: StandardActionConvertible {
             isTypedAction: true
         )
     }
+}
+
+public struct Show: StandardActionConvertible {
+    let routeElement: RouteElementIdentifier
+    let animated: Bool
+    public static let type = "RE_SWIFT_ROUTER_SHOW"
     
+    public init(_ element: RouteElementIdentifier, animated: Bool = true) {
+        self.routeElement = element
+        self.animated = animated
+    }
+    
+    public init(_ standardAction: StandardAction) {
+        self.routeElement = standardAction.payload!["routeElement"] as! RouteElementIdentifier
+        self.animated = standardAction.payload!["animated"] as! Bool
+    }
+    
+    public func toStandardAction() -> StandardAction {
+        return StandardAction(
+            type: Show.type,
+            payload: ["routeElement": routeElement as AnyObject, "animated": animated as AnyObject],
+            isTypedAction: true
+        )
+    }
+}
+
+public struct Back: StandardActionConvertible {
+    let animated: Bool
+    public static let type = "RE_SWIFT_ROUTER_BACK"
+    
+    public init(animated: Bool = true) {
+        self.animated = animated
+    }
+    
+    public init(_ standardAction: StandardAction) {
+        self.animated = standardAction.payload!["animated"] as! Bool
+    }
+    
+    public func toStandardAction() -> StandardAction {
+        return StandardAction(
+            type: Back.type,
+            payload: ["animated": animated as AnyObject],
+            isTypedAction: true
+        )
+    }
+}
+
+public struct Unwind: StandardActionConvertible {
+    let targetElement: RouteElementIdentifier
+    let animated: Bool
+    public static let type = "RE_SWIFT_ROUTER_UNWIND"
+    
+    public init(to element: RouteElementIdentifier, animated: Bool = true) {
+        self.targetElement = element
+        self.animated = animated
+    }
+    
+    public init(_ standardAction: StandardAction) {
+        self.targetElement = standardAction.payload!["targetElement"] as! RouteElementIdentifier
+        self.animated = standardAction.payload!["animated"] as! Bool
+    }
+    
+    public func toStandardAction() -> StandardAction {
+        return StandardAction(
+            type: Unwind.type,
+            payload: ["targetElement": targetElement as AnyObject, "animated": animated as AnyObject],
+            isTypedAction: true
+        )
+    }
 }
 
 public struct SetRouteSpecificData: Action {
